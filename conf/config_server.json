@@ -1,0 +1,191 @@
+{
+  "log": {
+    "access": "none",
+    "error": "",
+    "loglevel": "warning",
+    "dnsLog": false
+  },
+  "stats": {},
+  "policy": {
+    "levels": {
+      "0": {
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "api": {
+    "tag": "api",
+    "services": [
+      "StatsService"
+    ]
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "port": "6969,6881-6889",
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "sourcePort": "6881-6889",
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "ext:customgeo.dat:coherence-extra-exceptions"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 8080,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "tag": "api"
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "9eda6947-a6f9-4825-a385-e55de7002791",
+            "email": "love@xray.com",
+            "flow": "xtls-rprx-vision"
+          },
+          {
+            "id": "c73aed20-fae8-47d8-8ddf-41ca81fb5504",
+            "email": "Test@example.com",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "www.google.com:443",
+          "xver": 0,
+          "serverNames": [
+            "www.google.com"
+          ],
+          "privateKey": "GOQaWMx7X9tVrW21bcPPHjvu7ioqMfO5iu3n-WpvQVg",
+          "shortIds": [
+            "8170a2c916748cfb",
+            "7bc8882efa5890f4"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "routeOnly": true
+      }
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 80,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "9eda6947-a6f9-4825-a385-e55de7002791",
+            "email": "love@xray.com",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "www.google.com:80",
+          "xver": 0,
+          "serverNames": [
+            "www.google.com"
+          ],
+          "privateKey": "GOQaWMx7X9tVrW21bcPPHjvu7ioqMfO5iu3n-WpvQVg",
+          "shortIds": [
+            "8170a2c916748cfb"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "routeOnly": true
+      }
+    },
+    {
+      "tag": "grpc",
+      "listen": "127.0.0.1",
+      "port": 50051,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "9eda6947-a6f9-4825-a385-e55de7002791"
+          },
+          {
+            "id": "c73aed20-fae8-47d8-8ddf-41ca81fb5504"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "grpcSettings": {
+          "serviceName": ""
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ]
+}

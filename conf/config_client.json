@@ -1,0 +1,188 @@
+{
+  "log": {
+    "access": "none",
+    "error": "",
+    "loglevel": "warning",
+    "dnsLog": false
+  },
+  "stats": {},
+  "policy": {
+    "levels": {
+      "0": {
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "api": {
+    "tag": "api",
+    "services": [
+      "StatsService"
+    ]
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 8080,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "tag": "api"
+    },
+    {
+      "tag": "socks",
+      "port": 800,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "routeOnly": true
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      }
+    },
+    {
+      "tag": "http",
+      "port": 801,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "routeOnly": true
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "157.230.93.150",
+            "port": 443,
+            "users": [
+              {
+                "id": "9eda6947-a6f9-4825-a385-e55de7002791",
+                "email": "love@xray.com",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision-udp443"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "fingerprint": "chrome",
+          "serverName": "www.google.com",
+          "show": false,
+          "publicKey": "qZMFhNu_XuiEPzwggTShS5YhMyPIRWW-jW6vlSf0Dzg",
+          "shortId": "8170a2c916748cfb"
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api"
+      },
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "port": "6969,6881-6889",
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "sourcePort": "6881-6889",
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "ext:customgeo.dat:coherence-extra-exceptions"
+        ],
+        "outboundTag": "proxy"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:cn",
+          "domain:cn",
+          "domain:xn--fiqs8s",
+          "domain:xn--fiqz9s",
+          "domain:xn--55qx5d",
+          "domain:xn--io0a7i",
+          "domain:ru",
+          "domain:xn--p1ai",
+          "domain:by",
+          "domain:xn--90ais",
+          "domain:ir",
+          "ext:customgeo.dat:coherence-extra",
+          "ext:customgeo.dat:coherence-extra-plus"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "ip": [
+          "geoip:cn",
+          "geoip:ru",
+          "geoip:by",
+          "geoip:ir"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  }
+}
