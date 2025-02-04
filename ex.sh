@@ -484,12 +484,12 @@ generate_link() {
         public_key=$(strip_quotes $(jq ".outbounds[0].streamSettings.realitySettings.publicKey" $1))
         server_name=$(strip_quotes $(jq ".outbounds[0].streamSettings.realitySettings.serverName" $1))
         short_id=$(strip_quotes $(jq ".outbounds[0].streamSettings.realitySettings.shortId" $1))
-        link="vless://${id}@${address}:${port}?fragment=&security=reality&encryption=none&pbk=${public_key}&fp=chrome&type=tcp&flow=xtls-rprx-vision-udp443&sni=${server_name}&sid=${short_id}#easy-xray+%F0%9F%97%BD"
+        link="vless://${id}@${address}:${port}?fragment=&security=reality&encryption=none&pbk=${public_key}&fp=chrome&type=tcp&flow=xtls-rprx-vision-udp443&sni=${server_name}&sid=${short_id}#🗽KamaVPN🗽"
     else # grpc config
         id=$(strip_quotes $(jq ".outbounds[0].settings.vnext[0].users[0].id" $1))
         address=$(strip_quotes $(jq ".outbounds[0].settings.vnext[0].address" $1))
         service_name=$(strip_quotes $(jq ".outbounds[0].streamSettings.grpcSettings.serviceName" $1))
-        link="vless://${id}@${address}:443?security=tls&encryption=none&fp=chrome&type=grpc&serviceName=${service_name}#easy-xray+%F0%9F%97%BD+CDN"
+        link="vless://${id}@${address}:443?security=tls&encryption=none&fp=chrome&type=grpc&serviceName=${service_name}#🗽KamaVPN🗽"
     fi
     echo -e "$link"
 }

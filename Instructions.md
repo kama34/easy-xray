@@ -25,6 +25,7 @@ visudo
 
 ```
 %sudo ALL=(ALL) ALL
+username ALL=(ALL) NOPASSWD: /home/username/easy-xray/ex.sh
 ```
 
 Добавляем пользователя в группу
